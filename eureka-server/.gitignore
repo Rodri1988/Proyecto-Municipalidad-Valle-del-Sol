@@ -1,0 +1,11 @@
+# Carpeta de compilación Maven (se genera automáticamente)
+target/
+
+# Archivos de configuración de IDE
+.idea/
+*.iml
+.vscode/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
