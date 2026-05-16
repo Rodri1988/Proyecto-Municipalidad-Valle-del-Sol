@@ -4,6 +4,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Register() {
+  // Estado para el valor de la contraseña y su confirmación
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  // Estado para mostrar el error si las contraseñas no coinciden
+  const [passwordError, setPasswordError] = useState("");
   // Estado para mostrar un spinner o deshabilitar el botón mientras se envía el formulario
   const [isLoading, setIsLoading] = useState(false);
   // Estado para mostrar o no la contraseña. Así el usuario puede ver lo que escribe si lo necesita.
@@ -13,6 +18,12 @@ export default function Register() {
   // Simulamos una llamada a la API y deshabilitamos el botón mientras tanto.
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validamos que las contraseñas coincidan antes de continuar
+    if (password !== confirmPassword) {
+      setPasswordError("Las contraseñas no coinciden");
+      return;
+    }
+    setPasswordError("");
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -48,9 +59,10 @@ export default function Register() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+           
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre Completo
+                Nombre Completo <span className="text-red-600">*</span>
               </label>
               <input
                 id="fullName"
@@ -62,7 +74,7 @@ export default function Register() {
             </div>
             <div>
               <label htmlFor="rut" className="block text-sm font-medium text-gray-700 mb-1">
-                RUT
+                RUT <span className="text-red-600">*</span>
               </label>
               <input
                 id="rut"
@@ -74,7 +86,7 @@ export default function Register() {
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Correo Electrónico 
+                Correo Electrónico <span className="text-red-600">*</span>
               </label>
               <input
                 id="email"
@@ -86,7 +98,7 @@ export default function Register() {
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                 Contraseña
+                 Contraseña <span className="text-red-600">*</span>
               </label>
               {/*
                 Este bloque nos permite alternar la visibilidad de la contraseña.
@@ -97,6 +109,8 @@ export default function Register() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all pr-10"
                   placeholder="••••••••"
                 />
@@ -118,16 +132,39 @@ export default function Register() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Confirmar contraseña
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                Confirmar contraseña <span className="text-red-600">*</span>
               </label>
               <input
-                id="password"
+                id="confirmPassword"
                 type="password"
                 required
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
                 placeholder="••••••••"
               />
+              {passwordError && (
+                <p className="text-red-600 text-xs mt-1">{passwordError}</p>
+              )}
+            </div>
+             {/*
+              Solicitamos el certificado de residencia emitido por la junta vecinal de la comuna.
+              Esto nos permite rastrear y validar a los usuarios, ayudando a prevenir el mal uso de la plataforma (por ejemplo, denuncias falsas).
+            */}
+            <div>
+              <label htmlFor="certificadoResidencia" className="block text-sm font-medium text-gray-700 mb-1">
+                Certificado de Residencia (emitido por la junta vecinal de la comuna) <span className="text-red-600">*</span>
+              </label>
+              <input
+                id="certificadoResidencia"
+                name="certificadoResidencia"
+                type="file"
+                accept="application/pdf,image/*"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all bg-white"
+              />
+              <p className="text-xs text-gray-500 mt-1">Adjunta el certificado en formato PDF, JPG o PNG. Es obligatorio para validar tu residencia.</p>
             </div>
 
             <button
