@@ -1,14 +1,19 @@
 import { useState } from 'react';
+
+// Este componente representa el formulario de registro de nuevos usuarios para la plataforma.
 import { Link } from 'react-router-dom';
 
 export default function Register() {
+  // Estado para mostrar un spinner o deshabilitar el botón mientras se envía el formulario
   const [isLoading, setIsLoading] = useState(false);
+  // Estado para mostrar o no la contraseña. Así el usuario puede ver lo que escribe si lo necesita.
   const [showPassword, setShowPassword] = useState(false);
 
+  // Esta función se ejecuta cuando el usuario envía el formulario de registro.
+  // Simulamos una llamada a la API y deshabilitamos el botón mientras tanto.
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulación de llamada a la API de registro
     setTimeout(() => {
       setIsLoading(false);
       console.log("Registro simulado exitoso");
@@ -18,7 +23,10 @@ export default function Register() {
   return (
     <div className="min-h-screen flex bg-gray-50">
       
-      {/* Sección Izquierda: Branding */}
+      {/*
+        Sección Izquierda: Branding
+        Aquí mostramos el nombre de la plataforma y un mensaje motivacional.
+      */}
       <div className="hidden lg:flex lg:w-1/2 bg-slate-800 justify-center items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-red-600/20 mix-blend-multiply" />
         <div className="relative z-10 text-center px-8 text-white">
@@ -27,7 +35,10 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Sección Derecha: Formulario de Registro */}
+      {/*
+        Sección Derecha: Formulario de Registro
+        Aquí está el formulario principal donde el usuario ingresa sus datos para crear una cuenta.
+      */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 overflow-y-auto">
         <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-100 my-8">
           
@@ -77,6 +88,10 @@ export default function Register() {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                  Contraseña
               </label>
+              {/*
+                Este bloque nos permite alternar la visibilidad de la contraseña.
+                El botón a la derecha del input cambia el tipo de password a texto y viceversa.
+              */}
               <div className="relative">
                 <input
                   id="password"
@@ -92,6 +107,7 @@ export default function Register() {
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
+                  {/* Mostramos un ícono diferente según el estado de showPassword */}
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.236.938-4.675m2.062 2.675A9.956 9.956 0 0112 3c5.523 0 10 4.477 10 10 0 1.657-.336 3.236-.938 4.675m-2.062-2.675A9.956 9.956 0 0112 21c-1.657 0-3.236-.336-4.675-.938m2.675-2.062A9.956 9.956 0 0121 12c0-1.657-.336-3.236-.938-4.675" /></svg>
                   ) : (
