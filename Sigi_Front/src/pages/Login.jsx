@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { USUARIOS_PRUEBA } from '../constants/usuariosPrueba';
+import { USUARIOS_PRUEBA, rutaInicioPorRol } from '../constants/usuariosPrueba';
+import AuthHero from '../components/AuthHero';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       const session = await login(email.trim(), password);
-      navigate(rutaInicioPorSesion(session));
+      navigate(rutaInicioPorRol(session.rol));
     } catch {
       /* error en contexto */
     } finally {
@@ -31,24 +32,28 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 justify-center items-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-orange-600/20 mix-blend-multiply" />
-        <div className="relative z-10 text-center px-8 text-white">
-          <h1 className="text-5xl font-bold mb-4 tracking-tight">
-            Municipalidad
-            <br />
-            Valle del Sol
-          </h1>
-          <p className="text-xl text-slate-200">Gestión y prevención de emergencias</p>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50">
+      <AuthHero>
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
+          Municipalidad
+          <br />
+          Valle del Sol
+        </h1>
+        <p className="text-lg sm:text-xl text-white/90 font-medium">
+          Gestión y prevención de emergencias
+        </p>
+      </AuthHero>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+      <div className="relative flex-1 flex items-center justify-center p-6 sm:p-10 lg:p-12">
+        <div className="lg:hidden absolute inset-0 -z-10" aria-hidden>
+          <img src="/images/valle.jpeg" alt="" className="h-full w-full object-cover object-center" />
+          <div className="absolute inset-0 bg-slate-950/80" />
+        </div>
+
+        <div className="w-full max-w-md bg-white/95 backdrop-blur-sm p-7 sm:p-8 rounded-2xl shadow-2xl border border-white/20">
           <div className="mb-8 text-center lg:text-left">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Bienvenido</h2>
-            <p className="text-gray-500">Conectado al API Gateway SIGI (puerto 8080)</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">Bienvenido</h2>
+            <p className="text-gray-500 text-sm">Sistema SIGI — Municipalidad Valle del Sol</p>
           </div>
 
           {error && (
@@ -57,7 +62,7 @@ export default function Login() {
             </p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Correo electrónico
@@ -68,7 +73,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
                 placeholder="hawk.durant@test.com"
               />
             </div>
@@ -83,12 +88,12 @@ export default function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none pr-10"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none pr-16"
                 />
                 <button
                   type="button"
                   tabIndex={-1}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-sm text-gray-500 hover:text-gray-700"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
@@ -100,21 +105,21 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-lg text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 disabled:opacity-70"
+              className="w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 disabled:opacity-70 shadow-lg shadow-orange-200"
             >
               {isLoading ? 'Ingresando...' : 'Iniciar sesión'}
             </button>
           </form>
 
-          <section className="mt-6 border-t pt-4">
-            <p className="text-xs text-gray-500 mb-2 font-medium">Usuarios de prueba (grupo):</p>
-            <div className="flex flex-col gap-2">
+          <section className="mt-6 border-t pt-4 max-h-48 overflow-y-auto">
+            <p className="text-xs text-gray-500 mb-2 font-medium">Usuarios de prueba:</p>
+            <div className="flex flex-col gap-1.5">
               {USUARIOS_PRUEBA.map((u) => (
                 <button
                   key={u.id}
                   type="button"
                   onClick={() => usarPrueba(u)}
-                  className="text-left text-xs px-3 py-2 rounded-lg border hover:border-orange-400 hover:bg-orange-50"
+                  className="text-left text-xs px-3 py-2 rounded-lg border hover:border-orange-400 hover:bg-orange-50 transition"
                 >
                   <span className="font-bold">{u.nombre} {u.apellido}</span>
                   <span className="text-gray-500"> — {u.rol}</span>
@@ -125,7 +130,7 @@ export default function Login() {
 
           <p className="mt-6 text-center text-sm text-gray-600">
             ¿No tienes cuenta?{' '}
-            <Link to="/registro" className="font-medium text-orange-600 hover:text-orange-500">
+            <Link to="/registro" className="font-semibold text-orange-600 hover:text-orange-500">
               Regístrate
             </Link>
           </p>
@@ -133,11 +138,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
-
-function rutaInicioPorSesion(session) {
-  const rol = session.rol;
-  if (rol === 'ADMIN' || rol === 'OPERADOR_MUNICIPAL') return '/dashboard';
-  if (rol === 'EQUIPO_EMERGENCIA') return '/emergencias';
-  return '/inicio';
 }

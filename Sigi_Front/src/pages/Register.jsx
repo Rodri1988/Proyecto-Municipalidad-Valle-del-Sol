@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registro } from '../services/authService';
+import AuthHero from '../components/AuthHero';
 
 export default function Register() {
   const [nombre, setNombre] = useState('');
@@ -44,26 +45,34 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-800 justify-center items-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-red-600/20 mix-blend-multiply" />
-        <div className="relative z-10 text-center px-8 text-white">
-          <h1 className="text-4xl font-bold mb-4">Únete a Valle del Sol</h1>
-          <p className="text-lg text-slate-200">Reporta emergencias de forma segura</p>
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50">
+      <AuthHero>
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
+          Municipalidad
+          <br />
+          Valle del Sol
+        </h1>
+        <p className="text-lg sm:text-xl text-white/90 font-medium">
+          Gestión y prevención de emergencias
+        </p>
+      </AuthHero>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 overflow-y-auto">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border my-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Crear cuenta</h2>
-          <p className="text-gray-500 mb-6">Registro de residente (rol CIUDADANO)</p>
+      <div className="relative flex-1 flex items-center justify-center p-6 sm:p-10 overflow-y-auto">
+        <div className="lg:hidden absolute inset-0 -z-10" aria-hidden>
+          <img src="/images/valle.jpeg" alt="" className="h-full w-full object-cover object-center" />
+          <div className="absolute inset-0 bg-slate-950/80" />
+        </div>
+
+        <div className="w-full max-w-md bg-white/95 backdrop-blur-sm p-7 sm:p-8 rounded-2xl shadow-2xl border border-white/20 my-8">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">Crear cuenta</h2>
+          <p className="text-gray-500 mb-6 text-sm">Registro de residente (rol CIUDADANO)</p>
 
           {apiError && (
             <p className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">{apiError}</p>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="Nombre" id="nombre" value={nombre} onChange={setNombre} required />
               <Field label="Apellido" id="apellido" value={apellido} onChange={setApellido} required />
             </div>
@@ -82,11 +91,11 @@ export default function Register() {
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none pr-10"
+                  className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none pr-10"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 px-3 text-gray-500"
+                  className="absolute inset-y-0 right-0 px-3 text-gray-500 text-sm"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
@@ -105,20 +114,20 @@ export default function Register() {
             {passwordError && <p className="text-red-600 text-xs">{passwordError}</p>}
             <div>
               <label htmlFor="cert" className="block text-sm font-medium text-gray-700 mb-1">
-                Certificado de residencia (opcional en demo)
+                Certificado de residencia (opcional)
               </label>
               <input id="cert" type="file" accept="application/pdf,image/*" className="w-full text-sm" />
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-lg font-bold text-white bg-orange-600 hover:bg-orange-700 disabled:opacity-70"
+              className="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 disabled:opacity-70 shadow-lg"
             >
               {isLoading ? 'Registrando...' : 'Crear cuenta'}
             </button>
           </form>
           <p className="mt-6 text-center text-sm">
-            <Link to="/login" className="text-orange-600 font-medium">Iniciar sesión</Link>
+            <Link to="/login" className="text-orange-600 font-semibold">Iniciar sesión</Link>
           </p>
         </div>
       </div>
@@ -139,7 +148,7 @@ function Field({ label, id, type = 'text', value, onChange, required, placeholde
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+        className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
       />
     </div>
   );

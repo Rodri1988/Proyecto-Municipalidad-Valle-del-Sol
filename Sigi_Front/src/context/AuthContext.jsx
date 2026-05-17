@@ -1,7 +1,14 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { getStoredAuth, setStoredAuth } from '../services/apiClient';
 import { login as loginApi, logout as logoutApi } from '../services/authService';
-import { esAdmin, esOperador, esEquipoEmergencia, rutaInicioPorRol } from '../constants/usuariosPrueba';
+import {
+  esAdmin,
+  esOperador,
+  esEquipoEmergencia,
+  esEquipoSolo,
+  puedeReportar,
+  rutaInicioPorRol,
+} from '../constants/usuariosPrueba';
 
 const AuthContext = createContext(null);
 
@@ -20,6 +27,8 @@ export function AuthProvider({ children }) {
       esAdmin: esAdmin(auth?.rol),
       esOperador: esOperador(auth?.rol),
       esEquipo: esEquipoEmergencia(auth?.rol),
+      esEquipoSolo: esEquipoSolo(auth?.rol),
+      puedeReportar: puedeReportar(auth?.rol),
       rutaInicio: auth ? rutaInicioPorRol(auth.rol) : '/login',
       async login(email, password) {
         setError(null);

@@ -25,6 +25,9 @@ export function reporteApiACard(reporte) {
     latitud: reporte.latitud,
     longitud: reporte.longitud,
     prioridad: reporte.prioridad,
+    reportesSimilares: reporte.reportesSimilares ?? 0,
+    motivoPrioridad: reporte.motivoPrioridad,
+    requiereCarabineros: reporte.requiereCarabineros,
     raw: reporte,
   };
 }
