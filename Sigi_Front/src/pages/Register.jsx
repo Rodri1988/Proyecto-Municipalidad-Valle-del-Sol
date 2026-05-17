@@ -1,189 +1,146 @@
 import { useState } from 'react';
-
-// Este componente representa el formulario de registro de nuevos usuarios para la plataforma.
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { registro } from '../services/authService';
 
 export default function Register() {
-  // Estado para el valor de la contraseña y su confirmación
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  // Estado para mostrar el error si las contraseñas no coinciden
-  const [passwordError, setPasswordError] = useState("");
-  // Estado para mostrar un spinner o deshabilitar el botón mientras se envía el formulario
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [rut, setRut] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [apiError, setApiError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // Estado para mostrar o no la contraseña. Así el usuario puede ver lo que escribe si lo necesita.
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  // Esta función se ejecuta cuando el usuario envía el formulario de registro.
-  // Simulamos una llamada a la API y deshabilitamos el botón mientras tanto.
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validamos que las contraseñas coincidan antes de continuar
     if (password !== confirmPassword) {
-      setPasswordError("Las contraseñas no coinciden");
+      setPasswordError('Las contraseñas no coinciden');
       return;
     }
-    setPasswordError("");
+    setPasswordError('');
+    setApiError('');
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      await registro({
+        nombre: nombre.trim(),
+        apellido: apellido.trim(),
+        rut: rut.trim(),
+        email: email.trim(),
+        password,
+        telefono: telefono.trim() || undefined,
+        rol: 'CIUDADANO',
+      });
+      navigate('/login', { state: { registered: email } });
+    } catch (err) {
+      setApiError(err.message ?? 'No se pudo registrar. ¿El email ya existe?');
+    } finally {
       setIsLoading(false);
-      console.log("Registro simulado exitoso");
-    }, 1500);
+    }
   };
 
   return (
     <div className="min-h-screen flex bg-gray-50">
-      
-      {/*
-        Sección Izquierda: Branding
-        Aquí mostramos el nombre de la plataforma y un mensaje motivacional.
-      */}
       <div className="hidden lg:flex lg:w-1/2 bg-slate-800 justify-center items-center relative overflow-hidden">
         <div className="absolute inset-0 bg-red-600/20 mix-blend-multiply" />
         <div className="relative z-10 text-center px-8 text-white">
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">Únete al Equipo</h1>
-          <p className="text-lg text-slate-200">Plataforma de Prevención de Emergencias</p>
+          <h1 className="text-4xl font-bold mb-4">Únete a Valle del Sol</h1>
+          <p className="text-lg text-slate-200">Reporta emergencias de forma segura</p>
         </div>
       </div>
 
-      {/*
-        Sección Derecha: Formulario de Registro
-        Aquí está el formulario principal donde el usuario ingresa sus datos para crear una cuenta.
-      */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 overflow-y-auto">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-100 my-8">
-          
-          <div className="mb-8 text-center lg:text-left">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Crear Cuenta</h2>
-            <p className="text-gray-500">Completa tus datos para solicitar acceso al sistema.</p>
-          </div>
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 overflow-y-auto">
+        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border my-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Crear cuenta</h2>
+          <p className="text-gray-500 mb-6">Registro de residente (rol CIUDADANO)</p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-           
-            <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre Completo <span className="text-red-600">*</span>
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                placeholder="Ej. Juan Pérez"
-              />
+          {apiError && (
+            <p className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">{apiError}</p>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Nombre" id="nombre" value={nombre} onChange={setNombre} required />
+              <Field label="Apellido" id="apellido" value={apellido} onChange={setApellido} required />
             </div>
-            <div>
-              <label htmlFor="rut" className="block text-sm font-medium text-gray-700 mb-1">
-                RUT <span className="text-red-600">*</span>
-              </label>
-              <input
-                id="rut"
-                type="text"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                placeholder="12.345.678-9"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Correo Electrónico <span className="text-red-600">*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                placeholder="jperez@valledelsol.cl"
-              />
-            </div>
+            <Field label="RUT" id="rut" value={rut} onChange={setRut} required placeholder="12.345.678-9" />
+            <Field label="Email" id="email" type="email" value={email} onChange={setEmail} required />
+            <Field label="Teléfono" id="telefono" value={telefono} onChange={setTelefono} />
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                 Contraseña <span className="text-red-600">*</span>
+                Contraseña
               </label>
-              {/*
-                Este bloque nos permite alternar la visibilidad de la contraseña.
-                El botón a la derecha del input cambia el tipo de password a texto y viceversa.
-              */}
               <div className="relative">
                 <input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   required
+                  minLength={6}
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all pr-10"
-                  placeholder="••••••••"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none pr-10"
                 />
                 <button
                   type="button"
-                  tabIndex={-1}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
+                  className="absolute inset-y-0 right-0 px-3 text-gray-500"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
-                  {/* Mostramos un ícono diferente según el estado de showPassword */}
-                  {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.236.938-4.675m2.062 2.675A9.956 9.956 0 0112 3c5.523 0 10 4.477 10 10 0 1.657-.336 3.236-.938 4.675m-2.062-2.675A9.956 9.956 0 0112 21c-1.657 0-3.236-.336-4.675-.938m2.675-2.062A9.956 9.956 0 0121 12c0-1.657-.336-3.236-.938-4.675" /></svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-6 0a6 6 0 1112 0 6 6 0 01-12 0z" /></svg>
-                  )}
+                  {showPassword ? 'Ocultar' : 'Ver'}
                 </button>
               </div>
             </div>
-
+            <Field
+              label="Confirmar contraseña"
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              required
+            />
+            {passwordError && <p className="text-red-600 text-xs">{passwordError}</p>}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                Confirmar contraseña <span className="text-red-600">*</span>
+              <label htmlFor="cert" className="block text-sm font-medium text-gray-700 mb-1">
+                Certificado de residencia (opcional en demo)
               </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
-                placeholder="••••••••"
-              />
-              {passwordError && (
-                <p className="text-red-600 text-xs mt-1">{passwordError}</p>
-              )}
+              <input id="cert" type="file" accept="application/pdf,image/*" className="w-full text-sm" />
             </div>
-             {/*
-              Solicitamos el certificado de residencia emitido por la junta vecinal de la comuna.
-              Esto nos permite rastrear y validar a los usuarios, ayudando a prevenir el mal uso de la plataforma (por ejemplo, denuncias falsas).
-            */}
-            <div>
-              <label htmlFor="certificadoResidencia" className="block text-sm font-medium text-gray-700 mb-1">
-                Certificado de Residencia (emitido por la junta vecinal de la comuna) <span className="text-red-600">*</span>
-              </label>
-              <input
-                id="certificadoResidencia"
-                name="certificadoResidencia"
-                type="file"
-                accept="application/pdf,image/*"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all bg-white"
-              />
-              <p className="text-xs text-gray-500 mt-1">Adjunta el certificado en formato PDF, JPG o PNG. Es obligatorio para validar tu residencia.</p>
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4"
+              className="w-full py-3 rounded-lg font-bold text-white bg-orange-600 hover:bg-orange-700 disabled:opacity-70"
             >
-              {isLoading ? 'Registrando...' : 'Solicitar Acceso'}
+              {isLoading ? 'Registrando...' : 'Crear cuenta'}
             </button>
           </form>
-
-          <p className="mt-6 text-center text-sm text-gray-600">
-            ¿Ya tienes una cuenta?{' '}
-            <Link to="/login" className="font-medium text-orange-600 hover:text-orange-500 transition-colors">
-              Inicia sesión aquí
-            </Link>
+          <p className="mt-6 text-center text-sm">
+            <Link to="/login" className="text-orange-600 font-medium">Iniciar sesión</Link>
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Field({ label, id, type = 'text', value, onChange, required, placeholder }) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+      />
     </div>
   );
 }

@@ -1,83 +1,72 @@
-# Proyecto-Municipalidad-Valle-del-Sol Proyecto FullStack Caso Semestral: 
-"Municipalidad Valle del Sol – Plataforma inteligente para la gestión y prevención de incendios"   
-En diversas regiones del país en los últimos años han ocurrido incendios forestales y urbanos generando una amenaza constante a la seguridad de las personas, la infraestructura y el entorno natural. Las municipalidades cumplen un rol sumamente importante en la prevención, detección temprana y coordinación de emergencias.   
-La Municipalidad Valle del Sol, a través de su Subdirección de Gestión de Emergencias y Prevención de desastres desea tomar cartas en el asunto y ejecutar acciones preventivas, monitoreo y respuesta ante situaciones de emergencia en el territorio comunal.   
-Según las vivencias previas de las diversas catástrofes que han acontecido se ha identificado que la mayoría de los reportes se reciben a través de llamadas telefónicas, mensajes mediante redes sociales, informes de vecinos, aviso de bomberos o brigadistas forestales.   
+# Proyecto Municipalidad Valle del Sol
 
----
+Caso semestral Full Stack: plataforma para gestión y prevención de emergencias (incendios, fugas, rutas, etc.) en la comuna ficticia **Valle del Sol**.
 
-## Estructura del Proyecto
+Integrantes: **Hawk Durant**, **Emilio Jaramillo**, **Rodrigo Candia**.
 
-El sistema está compuesto por los siguientes módulos principales:
-
-- **eureka-server**: Servidor de descubrimiento de microservicios (Spring Cloud Netflix Eureka).
-- **api-gateway**: Puerta de entrada a los microservicios, maneja rutas, autenticación JWT y CORS (Spring Cloud Gateway).
-- **Sigi_Front**: Frontend moderno en React + Vite + TailwindCSS, permite a los usuarios autenticarse y reportar emergencias.
-
-## Tecnologías principales
-
-- **Backend:** Java 21, Spring Boot 3.2.5, Spring Cloud 2023.0.1, Maven, Docker
-- **Frontend:** React 19, Vite, TailwindCSS, ESLint
-
-## Estructura de carpetas
+## Estructura del repositorio
 
 ```
-├── api-gateway/      # API Gateway (Java, Spring Boot)
-├── eureka-server/    # Servidor Eureka (Java, Spring Boot)
-├── Sigi_Front/       # Frontend (React, Vite, TailwindCSS)
+Proyecto-Municipalidad-Valle-del-Sol/
+├── sigi-backend/          # Microservicios Java (Spring Boot, Eureka, Gateway, MySQL)
+├── Sigi_Front/            # Frontend React + Vite + Tailwind
+├── INFORME_PROYECTO_SIGI.md   # Informe técnico completo del proyecto
+└── README.md              # Este archivo
 ```
 
-## Instrucciones de uso rápido
+## Tecnologías
 
-### 1. Backend (Eureka y API Gateway)
+| Capa | Stack |
+|------|--------|
+| Backend | Java 17, Spring Boot 3.5, Spring Cloud, MySQL 8, JWT, Docker Compose |
+| Frontend | React 19, Vite, Tailwind CSS, Jest |
 
-Requisitos: Java 21, Maven, Docker (opcional)
+## Inicio rápido
 
-#### Usando Maven
+### Backend
 
 ```bash
-cd eureka-server
-mvn spring-boot:run
-# En otra terminal:
-cd ../api-gateway
-mvn spring-boot:run
+cd sigi-backend
+docker compose up --build
 ```
 
-#### Usando Docker
+API pública: http://localhost:8080
 
-```bash
-cd eureka-server
-docker build -t eureka-server .
-docker run -p 8761:8761 eureka-server
-# En otra terminal:
-cd ../api-gateway
-docker build -t api-gateway .
-docker run -p 8080:8080 api-gateway
-```
-
-### 2. Frontend
-
-Requisitos: Node.js >=18
+### Frontend
 
 ```bash
 cd Sigi_Front
 npm install
 npm run dev
 ```
-La app estará disponible en http://localhost:5173
 
----
+App: http://localhost:5173
 
-## Descripción funcional
+### Usuarios de prueba
 
-Plataforma para la gestión y prevención de incendios, permitiendo:
-- Registro y autenticación de usuarios
-- Reporte de emergencias
-- Visualización de información geográfica en tiempo real
-- Comunicación con la comunidad
+| Usuario | Email | Contraseña | Rol |
+|---------|-------|------------|-----|
+| Hawk Durant | hawk.durant@test.com | secreta123 | CIUDADANO |
+| Emilio Jaramillo | emilio.jaramillo@municipalidad.cl | operador123 | OPERADOR_MUNICIPAL |
+| Rodrigo Candia | rodrigo.candia@municipalidad.cl | admin123 | ADMIN |
 
----
+## Documentación
 
-## Créditos
-Desarrollado como caso semestral para la Municipalidad Valle del Sol.
+| Documento | Enlace |
+|-----------|--------|
+| Informe técnico integral | [INFORME_PROYECTO_SIGI.md](INFORME_PROYECTO_SIGI.md) |
+| Análisis de patrones y arquetipos (PDF) | [docs/ANALISIS_PATRONES_Y_ARQUETIPOS.md](docs/ANALISIS_PATRONES_Y_ARQUETIPOS.md) |
+| Plan de branching (PDF) | [docs/PLAN_DE_BRANCHING.md](docs/PLAN_DE_BRANCHING.md) |
+| Instrucciones de uso | [docs/INSTRUCCIONES_DE_USO.md](docs/INSTRUCCIONES_DE_USO.md) |
+| Índice documentación / exportar PDF | [docs/README.md](docs/README.md) |
+| Backend | [sigi-backend/README.md](sigi-backend/README.md) |
+| Frontend | [Sigi_Front/README.md](Sigi_Front/README.md) |
 
+## Funcionalidades principales
+
+- Registro e inicio de sesión con JWT
+- Reporte de emergencias con foto, dirección y prioridad
+- Validación por operador y creación de emergencias
+- Dashboard y mapa de incidentes (admin)
+- Avisos de empleo y postulaciones
+- Foto de perfil almacenada en servidor

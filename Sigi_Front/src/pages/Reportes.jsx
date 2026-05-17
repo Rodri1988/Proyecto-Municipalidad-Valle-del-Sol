@@ -1,108 +1,125 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import Layout from '../components/Layout';
+import Spinner from '../components/Spinner';
+import ErrorMessage from '../components/ErrorMessage';
 import ReporteIncendioCard from '../components/ReporteIncendioCard';
+import { reportesPendientes } from '../services/reporteService';
+import { reporteApiACard } from '../utils/reporteMappers';
+import { useAuth } from '../context/AuthContext';
 
-// Datos iniciales hardcodeados (simulando lo que vendría de la API)
-const reportesIniciales = [
-  { id: 1, sector: 'Sector Norte', nivelRiesgo: 'crítico', fuente: 'Vecino', hora: '08:30' },
-  { id: 2, sector: 'Sector Sur',   nivelRiesgo: 'alto',    fuente: 'Bomberos', hora: '09:15' },
-  { id: 3, sector: 'Sector Este',  nivelRiesgo: 'medio',   fuente: 'Brigadista', hora: '10:00' },
-  { id: 4, sector: 'Sector Oeste', nivelRiesgo: 'alto',    fuente: 'Vecino', hora: '10:45' },
+const reportesDemo = [
+  { id: 1, sector: 'Sector Norte', nivelRiesgo: 'crítico', fuente: 'Vecino', hora: '08:30', estado: 'PENDIENTE' },
+  { id: 2, sector: 'Sector Sur', nivelRiesgo: 'alto', fuente: 'Bomberos', hora: '09:15', estado: 'PENDIENTE' },
 ];
 
 export default function Reportes() {
-  // ── useState ──────────────────────────────────────────────
-  const [reportes, setReportes]       = useState(reportesIniciales);
+  const { isAuthenticated } = useAuth();
+  const [reportes, setReportes] = useState([]);
   const [filtroNivel, setFiltroNivel] = useState('todos');
-  const [loading, setLoading]         = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [usarApi, setUsarApi] = useState(isAuthenticated);
 
-  // ── useEffect 1: simula carga inicial ─────────────────────
-  useEffect(() => {
-    setTimeout(() => {
+  const cargarApi = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await reportesPendientes();
+      setReportes(data.map(reporteApiACard));
+    } catch (err) {
+      setError(err.message);
+      setReportes(reportesDemo);
+      setUsarApi(false);
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   }, []);
 
-  // ── useEffect 2: simula nuevo reporte cada 5 segundos ─────
   useEffect(() => {
-    const niveles = ['alto', 'crítico', 'medio'];
-    const sectores = ['Sector Centro', 'Cerro Alto', 'Villa Verde', 'Parque Industrial'];
-    const fuentes = ['Vecino', 'Bomberos', 'Brigadista', 'Cámara'];
+    if (usarApi && isAuthenticated) {
+      cargarApi();
+    } else {
+      setReportes(reportesDemo);
+      const t = setTimeout(() => setLoading(false), 800);
+      return () => clearTimeout(t);
+    }
+  }, [usarApi, isAuthenticated, cargarApi]);
 
-    const intervalo = setInterval(() => {
-      const nuevoReporte = {
-        id: Date.now(),
-        sector: sectores[Math.floor(Math.random() * sectores.length)],
-        nivelRiesgo: niveles[Math.floor(Math.random() * niveles.length)],
-        fuente: fuentes[Math.floor(Math.random() * fuentes.length)],
-        hora: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }),
-      };
-      setReportes(prev => [nuevoReporte, ...prev]);
-    }, 60000);
+  useEffect(() => {
+    if (!usarApi || !isAuthenticated) {
+      const niveles = ['alto', 'crítico', 'medio'];
+      const sectores = ['Sector Centro', 'Cerro Alto', 'Villa Verde'];
+      const fuentes = ['Vecino', 'Bomberos', 'Brigadista'];
 
-    // Limpieza: detiene el intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalo);
-  }, []);
+      const id = setInterval(() => {
+        const nuevo = {
+          id: Date.now(),
+          sector: sectores[Math.floor(Math.random() * sectores.length)],
+          nivelRiesgo: niveles[Math.floor(Math.random() * niveles.length)],
+          fuente: fuentes[Math.floor(Math.random() * fuentes.length)],
+          hora: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' }),
+          estado: 'PENDIENTE',
+        };
+        setReportes((prev) => [nuevo, ...prev]);
+      }, 5000);
+      return () => clearInterval(id);
+    }
+    return undefined;
+  }, [usarApi, isAuthenticated]);
 
-  // ── Marcar como atendido: mueve al final ──────────────────
   const handleAtendido = (id) => {
-    setReportes(prev => {
-      const atendido = prev.find(r => r.id === id);
-      const resto    = prev.filter(r => r.id !== id);
+    setReportes((prev) => {
+      const atendido = prev.find((r) => r.id === id);
+      const resto = prev.filter((r) => r.id !== id);
       return [...resto, atendido];
     });
   };
 
-  // ── Filtro por nivel de riesgo ────────────────────────────
-  const reportesFiltrados = reportes.filter(r =>
-    filtroNivel === 'todos' ? true : r.nivelRiesgo === filtroNivel
+  const reportesFiltrados = reportes.filter((r) =>
+    filtroNivel === 'todos' ? true : r.nivelRiesgo === filtroNivel,
   );
 
-  // ── Render ────────────────────────────────────────────────
-  if (loading) return (
-    <div className="flex justify-center items-center h-screen">
-      <p className="text-orange-600 font-bold text-xl">Cargando reportes...</p>
-    </div>
-  );
+  if (loading) {
+    return (
+      <Layout title="Cola de reportes">
+        <Spinner label="Cargando reportes..." />
+      </Layout>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">
-        Reportes de Incendio
-      </h1>
-      <p className="text-gray-500 mb-6">Municipalidad Valle del Sol</p>
-
-      {/* Filtros */}
-      <div className="flex gap-2 mb-6">
-        {['todos', 'crítico', 'alto', 'medio'].map(nivel => (
+    <Layout title="Reportes de emergencia">
+      <ErrorMessage message={error} onRetry={cargarApi} />
+      <p className="text-sm text-gray-500 mb-4">
+        {usarApi ? 'Datos en vivo desde API' : 'Modo demo (FULLSTACK III)'} · filtro y simulación cada 5s
+      </p>
+      <div className="flex flex-wrap gap-2 mb-6">
+        {['todos', 'crítico', 'alto', 'medio'].map((nivel) => (
           <button
             key={nivel}
+            type="button"
             onClick={() => setFiltroNivel(nivel)}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
-              filtroNivel === nivel
-                ? 'bg-orange-600 text-white'
-                : 'bg-white text-gray-600 border border-gray-300 hover:border-orange-400'
+            className={`px-4 py-2 rounded-full text-sm font-bold ${
+              filtroNivel === nivel ? 'bg-orange-600 text-white' : 'bg-white border'
             }`}
           >
             {nivel.charAt(0).toUpperCase() + nivel.slice(1)}
           </button>
         ))}
       </div>
-
-      {/* Total de reportes */}
       <p className="text-sm text-gray-500 mb-4">
-        Mostrando <span className="font-bold text-orange-600">{reportesFiltrados.length}</span> reportes
+        Mostrando <strong className="text-orange-600">{reportesFiltrados.length}</strong> reportes
       </p>
-
-      {/* Lista de tarjetas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {reportesFiltrados.map(reporte => (
+        {reportesFiltrados.map((reporte) => (
           <ReporteIncendioCard
             key={reporte.id}
             reporte={reporte}
             onAtendido={handleAtendido}
+            modoOperador={usarApi}
           />
         ))}
       </div>
-    </div>
+    </Layout>
   );
 }
