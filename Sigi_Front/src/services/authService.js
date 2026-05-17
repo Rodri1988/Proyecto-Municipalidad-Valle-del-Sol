@@ -13,6 +13,8 @@ export async function login(email, password) {
     email: data.email,
     rol: data.rol,
     usuarioId: data.usuarioId,
+    nombre: data.nombre,
+    apellido: data.apellido,
     expiracionEnSegundos: data.expiracionEnSegundos,
   };
   setStoredAuth(auth);

@@ -30,11 +30,9 @@ describe('Login', () => {
     expect(passwordInput).toHaveAttribute('type', 'text');
   });
 
-  it('muestra usuarios de prueba del grupo', () => {
+  it('no muestra lista de usuarios de prueba', () => {
     renderLogin();
-    expect(screen.getByText(/Hawk Durant/i)).toBeInTheDocument();
-    expect(screen.getByText(/Emilio Jaramillo/i)).toBeInTheDocument();
-    expect(screen.getByText(/Rodrigo Candia/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Usuarios de prueba/i)).not.toBeInTheDocument();
   });
 
   it('llama al API de login al enviar', async () => {

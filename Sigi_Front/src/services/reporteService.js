@@ -45,3 +45,10 @@ export async function clasificarReporte(id, { estado, requiereCarabineros, notas
     body: JSON.stringify({ estado, requiereCarabineros, notas }),
   });
 }
+
+export async function asignarReporte(id, { usuarioId, notas }) {
+  return apiFetch(`/api/reportes/${id}/asignar`, {
+    method: 'PUT',
+    body: JSON.stringify({ usuarioId, notas }),
+  });
+}

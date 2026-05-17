@@ -8,6 +8,10 @@ export async function listarEmpleosAdmin() {
   return apiFetch('/api/empleos/admin/todos');
 }
 
+export async function listarPostulaciones() {
+  return apiFetch('/api/empleos/postulaciones');
+}
+
 export async function crearEmpleo(data) {
   return apiFetch('/api/empleos', {
     method: 'POST',

@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   listarEmpleos,
   listarEmpleosAdmin,
+  listarPostulaciones,
   crearEmpleo,
   eliminarEmpleo,
   postularEmpleo,
@@ -13,9 +14,11 @@ import {
 } from '../services/empleoService';
 
 export default function Empleos() {
-  const { esAdmin } = useAuth();
+  const { esAdmin, esOperador } = useAuth();
+  const puedeVerPostulaciones = esAdmin || esOperador;
   const [empleos, setEmpleos] = useState([]);
   const [postulaciones, setPostulaciones] = useState([]);
+  const [todasPostulaciones, setTodasPostulaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mensaje, setMensaje] = useState('');
@@ -31,12 +34,14 @@ export default function Empleos() {
     setLoading(true);
     setError(null);
     try {
-      const [emp, post] = await Promise.all([
+      const [emp, post, todas] = await Promise.all([
         esAdmin ? listarEmpleosAdmin() : listarEmpleos(),
-        misPostulaciones(),
+        misPostulaciones().catch(() => []),
+        puedeVerPostulaciones ? listarPostulaciones().catch(() => []) : Promise.resolve([]),
       ]);
       setEmpleos(emp);
       setPostulaciones(post);
+      setTodasPostulaciones(todas);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,7 +51,7 @@ export default function Empleos() {
 
   useEffect(() => {
     cargar();
-  }, [esAdmin]);
+  }, [esAdmin, puedeVerPostulaciones]);
 
   const postular = async (empleoId) => {
     try {
@@ -117,6 +122,42 @@ export default function Empleos() {
           </li>
         ))}
       </ul>
+      {puedeVerPostulaciones && todasPostulaciones.length > 0 && (
+        <section className="mb-8">
+          <h2 className="font-bold text-lg mb-3 text-slate-800">Postulaciones recibidas</h2>
+          <div className="overflow-x-auto rounded-xl border bg-white">
+            <table className="w-full text-sm min-w-[520px]">
+              <thead className="bg-slate-100">
+                <tr>
+                  <th className="p-2 text-left">Empleo</th>
+                  <th className="p-2 text-left">Postulante</th>
+                  <th className="p-2 text-left">RUT</th>
+                  <th className="p-2 text-left">Email</th>
+                  <th className="p-2 text-left">Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                {todasPostulaciones.map((p) => (
+                  <tr key={p.id} className="border-t">
+                    <td className="p-2">{p.empleoTitulo ?? `#${p.empleoId}`}</td>
+                    <td className="p-2">
+                      {p.postulanteNombre} {p.postulanteApellido}
+                    </td>
+                    <td className="p-2">{p.postulanteRut ?? '—'}</td>
+                    <td className="p-2">{p.postulanteEmail ?? '—'}</td>
+                    <td className="p-2 text-xs text-slate-500">
+                      {p.fechaPostulacion
+                        ? new Date(p.fechaPostulacion).toLocaleString('es-CL')
+                        : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
       {postulaciones.length > 0 && (
         <>
           <h2 className="font-bold mb-2">Mis postulaciones</h2>

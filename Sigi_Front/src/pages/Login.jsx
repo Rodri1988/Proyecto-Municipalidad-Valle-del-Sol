@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { USUARIOS_PRUEBA, rutaInicioPorRol } from '../constants/usuariosPrueba';
+import { rutaInicioPorRol } from '../constants/usuariosPrueba';
 import AuthHero from '../components/AuthHero';
 
 export default function Login() {
@@ -24,11 +24,6 @@ export default function Login() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const usarPrueba = (u) => {
-    setEmail(u.email);
-    setPassword(u.password);
   };
 
   return (
@@ -110,23 +105,6 @@ export default function Login() {
               {isLoading ? 'Ingresando...' : 'Iniciar sesión'}
             </button>
           </form>
-
-          <section className="mt-6 border-t pt-4 max-h-48 overflow-y-auto">
-            <p className="text-xs text-gray-500 mb-2 font-medium">Usuarios de prueba:</p>
-            <div className="flex flex-col gap-1.5">
-              {USUARIOS_PRUEBA.map((u) => (
-                <button
-                  key={u.id}
-                  type="button"
-                  onClick={() => usarPrueba(u)}
-                  className="text-left text-xs px-3 py-2 rounded-lg border hover:border-orange-400 hover:bg-orange-50 transition"
-                >
-                  <span className="font-bold">{u.nombre} {u.apellido}</span>
-                  <span className="text-gray-500"> — {u.rol}</span>
-                </button>
-              ))}
-            </div>
-          </section>
 
           <p className="mt-6 text-center text-sm text-gray-600">
             ¿No tienes cuenta?{' '}

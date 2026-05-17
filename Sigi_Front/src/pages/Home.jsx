@@ -5,11 +5,12 @@ import { getActividades } from '../services/municipioLocal';
 import { puedeReportar, esOperador, esAdmin } from '../constants/usuariosPrueba';
 
 export default function Home() {
-  const { auth, esEquipoSolo } = useAuth();
+  const { auth, esEquipoSolo, nombreCompleto } = useAuth();
   const actividades = getActividades().slice(0, 2);
+  const saludo = nombreCompleto ?? auth?.nombre ?? 'vecino';
 
   return (
-    <Layout title={`Hola, ${auth?.email?.split('@')[0] ?? 'vecino'}`}>
+    <Layout title={`Hola, ${saludo}`}>
       <p className="text-slate-600 mb-8 max-w-2xl">
         Plataforma SIGI — Municipalidad Valle del Sol. Reporta incendios, fugas, rutas dañadas y más.
         La prioridad de tu reporte se calcula automáticamente según métricas del sistema.

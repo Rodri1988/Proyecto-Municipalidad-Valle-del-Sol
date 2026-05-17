@@ -49,10 +49,10 @@ export async function apiFetch(path, options = {}) {
 }
 
 /** Subida multipart (imágenes) — no enviar Content-Type JSON */
-export async function apiUpload(path, formData) {
+export async function apiUpload(path, formData, options = {}) {
   const auth = getStoredAuth();
   const headers = {};
-  if (auth?.token) {
+  if (auth?.token && !options.skipAuth) {
     headers.Authorization = `Bearer ${auth.token}`;
   }
 

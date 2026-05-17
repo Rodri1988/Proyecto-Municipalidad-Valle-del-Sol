@@ -23,6 +23,11 @@ export function AuthProvider({ children }) {
       rol: auth?.rol,
       usuarioId: auth?.usuarioId,
       email: auth?.email,
+      nombre: auth?.nombre,
+      apellido: auth?.apellido,
+      nombreCompleto: auth?.nombre && auth?.apellido
+        ? `${auth.nombre} ${auth.apellido}`
+        : null,
       error,
       esAdmin: esAdmin(auth?.rol),
       esOperador: esOperador(auth?.rol),

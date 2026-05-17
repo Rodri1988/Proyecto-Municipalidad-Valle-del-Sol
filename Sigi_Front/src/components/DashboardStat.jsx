@@ -1,4 +1,4 @@
-export default function DashboardStat({ label, value, hint, accent = 'orange' }) {
+export default function DashboardStat({ label, value, hint, accent = 'orange', onClick, active }) {
   const accents = {
     orange: 'from-orange-500 to-amber-600',
     red: 'from-red-500 to-rose-600',
@@ -8,14 +8,22 @@ export default function DashboardStat({ label, value, hint, accent = 'orange' })
     slate: 'from-slate-600 to-slate-800',
   };
 
+  const Tag = onClick ? 'button' : 'div';
+
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white p-5 shadow-lg shadow-slate-200/50 transition hover:-translate-y-0.5 hover:shadow-xl">
+    <Tag
+      type={onClick ? 'button' : undefined}
+      onClick={onClick}
+      className={`group relative overflow-hidden rounded-2xl border bg-white p-5 shadow-lg shadow-slate-200/50 transition text-left w-full ${
+        onClick ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-xl focus:ring-2 focus:ring-orange-400' : ''
+      } ${active ? 'ring-2 ring-orange-500 border-orange-300' : 'border-white/10'}`}
+    >
       <div
         className={`absolute -right-4 -top-4 h-20 w-20 rounded-full bg-gradient-to-br ${accents[accent] ?? accents.orange} opacity-10 transition group-hover:opacity-20`}
       />
       <p className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">{value}</p>
       <p className="mt-1 text-sm font-semibold text-slate-700">{label}</p>
       {hint && <p className="mt-0.5 text-xs text-slate-400">{hint}</p>}
-    </div>
+    </Tag>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registro } from '../services/authService';
+import { subirImagen } from '../services/mediaService';
 import AuthHero from '../components/AuthHero';
 
 export default function Register() {
@@ -11,7 +12,9 @@ export default function Register() {
   const [telefono, setTelefono] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [certificado, setCertificado] = useState(null);
   const [passwordError, setPasswordError] = useState('');
+  const [certError, setCertError] = useState('');
   const [apiError, setApiError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -23,10 +26,16 @@ export default function Register() {
       setPasswordError('Las contraseñas no coinciden');
       return;
     }
+    if (!certificado) {
+      setCertError('Debes adjuntar tu certificado de residencia');
+      return;
+    }
     setPasswordError('');
+    setCertError('');
     setApiError('');
     setIsLoading(true);
     try {
+      const media = await subirImagen(certificado, 'CERTIFICADO');
       await registro({
         nombre: nombre.trim(),
         apellido: apellido.trim(),
@@ -34,7 +43,7 @@ export default function Register() {
         email: email.trim(),
         password,
         telefono: telefono.trim() || undefined,
-        rol: 'CIUDADANO',
+        certificadoResidenciaMediaId: media.id,
       });
       navigate('/login', { state: { registered: email } });
     } catch (err) {
@@ -65,7 +74,9 @@ export default function Register() {
 
         <div className="w-full max-w-md bg-white/95 backdrop-blur-sm p-7 sm:p-8 rounded-2xl shadow-2xl border border-white/20 my-8">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">Crear cuenta</h2>
-          <p className="text-gray-500 mb-6 text-sm">Registro de residente (rol CIUDADANO)</p>
+          <p className="text-gray-500 mb-6 text-sm">
+            Registro de residente — rol ciudadano asignado automáticamente
+          </p>
 
           {apiError && (
             <p className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded-lg">{apiError}</p>
@@ -114,9 +125,20 @@ export default function Register() {
             {passwordError && <p className="text-red-600 text-xs">{passwordError}</p>}
             <div>
               <label htmlFor="cert" className="block text-sm font-medium text-gray-700 mb-1">
-                Certificado de residencia (opcional)
+                Certificado de residencia <span className="text-red-600">*</span>
               </label>
-              <input id="cert" type="file" accept="application/pdf,image/*" className="w-full text-sm" />
+              <input
+                id="cert"
+                type="file"
+                required
+                accept="application/pdf,image/*"
+                className="w-full text-sm"
+                onChange={(e) => {
+                  setCertificado(e.target.files?.[0] ?? null);
+                  setCertError('');
+                }}
+              />
+              {certError && <p className="text-red-600 text-xs mt-1">{certError}</p>}
             </div>
             <button
               type="submit"
