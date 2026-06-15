@@ -13,45 +13,66 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id: auth-service
-          uri: lb://auth-service
+        - id: servicio-usuario
+          uri: lb://servicio-usuario
           predicates:
-            - Path=/auth/**
+            - Path=/api/usuarios/**
           filters:
             - StripPrefix=0
 
-        - id: reportes-service
-          uri: lb://reportes-service
+        - id: servicio-reporte
+          uri: lb://servicio-reporte
           predicates:
             - Path=/api/reportes/**
           filters:
             - StripPrefix=0
 
-        - id: emergencias-service
-          uri: lb://emergencias-service
+        - id: servicio-emergencia
+          uri: lb://servicio-emergencia
           predicates:
             - Path=/api/emergencias/**
           filters:
             - StripPrefix=0
 
-        - id: ubicacion-service
-          uri: lb://ubicacion-service
+        - id: servicio-ubicacion
+          uri: lb://servicio-ubicacion
           predicates:
             - Path=/api/ubicacion/**
           filters:
             - StripPrefix=0
 
-        - id: notificaciones-service
-          uri: lb://notificaciones-service
+        - id: servicio-notificacion
+          uri: lb://servicio-notificacion
           predicates:
             - Path=/api/notificaciones/**
+          filters:
+            - StripPrefix=0
+
+        - id: servicio-recurso
+          uri: lb://servicio-recurso
+          predicates:
+            - Path=/api/recursos/**
+          filters:
+            - StripPrefix=0
+
+        - id: servicio-empleo
+          uri: lb://servicio-empleo
+          predicates:
+            - Path=/api/empleos/**
+          filters:
+            - StripPrefix=0
+
+        - id: servicio-media
+          uri: lb://servicio-media
+          predicates:
+            - Path=/api/media/**
           filters:
             - StripPrefix=0
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
   instance:
