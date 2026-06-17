@@ -1,0 +1,232 @@
+# S.I.G.I — Municipalidad Valle del Sol
+# docker compose up --build
+
+services:
+
+  # ─────────────────────────────────────────
+  # BASE DE DATOS
+  # ─────────────────────────────────────────
+  mysql-sigi:
+    image: mysql:8.0
+    container_name: mysql-sigi
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 8s
+      timeout: 5s
+      retries: 15
+
+  # ─────────────────────────────────────────
+  # INFRAESTRUCTURA
+  # ─────────────────────────────────────────
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8761/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 90s
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_HOST: eureka-server
+      JWT_SECRET: ${JWT_SECRET:-sigi-municipalidad-valle-sol-secret-key-2024-segura}
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+
+  # ─────────────────────────────────────────
+  # FRONTEND
+  # ─────────────────────────────────────────
+  sigi-front:
+    build:
+      context: ./Sigi_Front
+      dockerfile: Dockerfile
+    container_name: sigi-front
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+
+  # ─────────────────────────────────────────
+  # MICROSERVICIOS (contextos pendientes de clonar repo de compañero)
+  # ─────────────────────────────────────────
+  servicio-usuario:
+    build:
+      context: ./sigi-backend/servicio-usuario   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+      JWT_SECRET: ${JWT_SECRET:-sigi-municipalidad-valle-sol-secret-key-2024-segura}
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  servicio-reporte:
+    build:
+      context: ./sigi-backend/servicio-reporte   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      servicio-ubicacion:
+        condition: service_started
+      servicio-emergencia:
+        condition: service_started
+
+  servicio-ubicacion:
+    build:
+      context: ./sigi-backend/servicio-ubicacion   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+      OPENCAGE_API_KEY: ${OPENCAGE_API_KEY:-}
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  servicio-emergencia:
+    build:
+      context: ./sigi-backend/servicio-emergencia   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      servicio-recurso:
+        condition: service_started
+      servicio-notificacion:
+        condition: service_started
+
+  servicio-recurso:
+    build:
+      context: ./sigi-backend/servicio-recurso   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  servicio-notificacion:
+    build:
+      context: ./sigi-backend/servicio-notificacion   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8086"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  servicio-empleo:
+    build:
+      context: ./sigi-backend/servicio-empleo   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8087"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  servicio-media:
+    build:
+      context: ./sigi-backend/servicio-media   # ← ajustar al clonar
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8088"
+    environment:
+      MYSQL_HOST: mysql-sigi
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-root}
+      EUREKA_HOST: eureka-server
+      MEDIA_UPLOAD_DIR: /app/uploads
+    volumes:
+      - media-uploads:/app/uploads
+    depends_on:
+      mysql-sigi:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
+  media-uploads:
