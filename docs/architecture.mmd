@@ -1,0 +1,24 @@
+graph LR
+  subgraph Frontend
+    FE[Frontend<br/>React/Vite]
+  end
+
+  subgraph Infra
+    APIGW[API Gateway]
+    EUREKA[Eureka<br/>Service Registry]
+    MS1[Microservice A]
+    MS2[Microservice B]
+    DB1[(Database A)]
+    DB2[(Database B)]
+  end
+
+  FE -->|HTTP / REST| APIGW
+  APIGW -->|Service discovery| EUREKA
+  APIGW --> MS1
+  APIGW --> MS2
+
+  MS1 --> DB1
+  MS2 --> DB2
+
+  MS1 -->|Registers with| EUREKA
+  MS2 -->|Registers with| EUREKA
