@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import MaterialSymbol from '../components/MaterialSymbol';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import DashboardStat from '../components/DashboardStat';
@@ -85,7 +86,7 @@ export default function DashboardEquipo() {
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="text-3xl" aria-hidden>{config.icono}</span>
+            <MaterialSymbol icon={config.icono} className="text-4xl" />
             <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{config.titulo}</h1>
             <p className="mt-1 text-sm text-white/80 sm:text-base">{config.subtitulo}</p>
           </div>

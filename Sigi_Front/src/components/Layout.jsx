@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import MaterialSymbol from './MaterialSymbol';
 import {
   ROLES_EQUIPO,
   puedeReportar,
@@ -50,7 +51,10 @@ export default function Layout({ children, title }) {
             className="font-bold text-lg tracking-tight shrink-0"
           >
             {esEquipo && configEquipo ? (
-              <span>{configEquipo.icono} Valle del Sol · SIGI</span>
+              <span className="inline-flex items-center gap-2">
+                <MaterialSymbol icon={configEquipo.icono} className="text-[1.15rem]" />
+                Valle del Sol · SIGI
+              </span>
             ) : (
               'Valle del Sol · SIGI'
             )}
