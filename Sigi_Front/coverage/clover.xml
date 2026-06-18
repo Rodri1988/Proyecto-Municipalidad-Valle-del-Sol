@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1781743279462" clover="3.2.0">
+  <project timestamp="1781743279463" name="All files">
+    <metrics statements="165" coveredstatements="156" conditionals="119" coveredconditionals="95" methods="51" coveredmethods="48" elements="335" coveredelements="299" complexity="0" loc="165" ncloc="165" packages="7" files="12" classes="12"/>
+    <package name="components">
+      <metrics statements="6" coveredstatements="6" conditionals="16" coveredconditionals="9" methods="3" coveredmethods="3"/>
+      <file name="AuthHero.jsx" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\components\AuthHero.jsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="2" count="57" type="stmt"/>
+      </file>
+      <file name="ReporteIncendioCard.jsx" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\components\ReporteIncendioCard.jsx">
+        <metrics statements="5" coveredstatements="5" conditionals="16" coveredconditionals="9" methods="2" coveredmethods="2"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="constants">
+      <metrics statements="14" coveredstatements="13" conditionals="10" coveredconditionals="9" methods="7" coveredmethods="6"/>
+      <file name="usuariosPrueba.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\constants\usuariosPrueba.js">
+        <metrics statements="14" coveredstatements="13" conditionals="10" coveredconditionals="9" methods="7" coveredmethods="6"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="102" count="2" type="stmt"/>
+        <line num="136" count="8" type="stmt"/>
+        <line num="140" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="144" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="148" count="6" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="156" count="4" type="stmt"/>
+        <line num="160" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="161" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="162" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="context">
+      <metrics statements="21" coveredstatements="15" conditionals="8" coveredconditionals="5" methods="8" coveredmethods="6"/>
+      <file name="AuthContext.jsx" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\context\AuthContext.jsx">
+        <metrics statements="21" coveredstatements="15" conditionals="8" coveredconditionals="5" methods="8" coveredmethods="6"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="61" count="5" type="stmt"/>
+        <line num="65" count="8" type="stmt"/>
+        <line num="66" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="67" count="8" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="pages">
+      <metrics statements="57" coveredstatements="57" conditionals="35" coveredconditionals="32" methods="14" coveredmethods="14"/>
+      <file name="Login.jsx" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\pages\Login.jsx">
+        <metrics statements="18" coveredstatements="18" conditionals="10" coveredconditionals="9" methods="6" coveredmethods="6"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+      </file>
+      <file name="Register.jsx" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\pages\Register.jsx">
+        <metrics statements="39" coveredstatements="39" conditionals="25" coveredconditionals="23" methods="8" coveredmethods="8"/>
+        <line num="8" count="49" type="stmt"/>
+        <line num="9" count="49" type="stmt"/>
+        <line num="10" count="49" type="stmt"/>
+        <line num="11" count="49" type="stmt"/>
+        <line num="12" count="49" type="stmt"/>
+        <line num="13" count="49" type="stmt"/>
+        <line num="14" count="49" type="stmt"/>
+        <line num="15" count="49" type="stmt"/>
+        <line num="16" count="49" type="stmt"/>
+        <line num="17" count="49" type="stmt"/>
+        <line num="18" count="49" type="stmt"/>
+        <line num="19" count="49" type="stmt"/>
+        <line num="20" count="49" type="stmt"/>
+        <line num="21" count="49" type="stmt"/>
+        <line num="23" count="49" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="29" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="50" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="56" count="49" type="stmt"/>
+        <line num="104" count="5" type="stmt"/>
+        <line num="110" count="2" type="stmt"/>
+        <line num="137" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="138" count="3" type="stmt"/>
+        <line num="161" count="294" type="stmt"/>
+        <line num="171" count="26" type="stmt"/>
+      </file>
+    </package>
+    <package name="services">
+      <metrics statements="61" coveredstatements="59" conditionals="40" coveredconditionals="34" methods="18" coveredmethods="18"/>
+      <file name="apiClient.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\services\apiClient.js">
+        <metrics statements="39" coveredstatements="39" conditionals="35" coveredconditionals="31" methods="6" coveredmethods="6"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="7" count="17" type="stmt"/>
+        <line num="8" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="24" count="8" type="stmt"/>
+        <line num="29" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="33" count="8" type="stmt"/>
+        <line num="38" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="42" count="3" type="stmt"/>
+        <line num="45" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="4" type="stmt"/>
+        <line num="48" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="3" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="55" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="65" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="71" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="75" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="81" count="4" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="83" count="2" type="cond" truecount="1" falsecount="2"/>
+        <line num="85" count="2" type="stmt"/>
+        <line num="92" count="2" type="cond" truecount="1" falsecount="1"/>
+      </file>
+      <file name="authService.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\services\authService.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+      </file>
+      <file name="empleoService.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\services\empleoService.js">
+        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+      </file>
+      <file name="mediaService.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\services\mediaService.js">
+        <metrics statements="8" coveredstatements="6" conditionals="5" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="test">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="apiMock.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\test\apiMock.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="8" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="5" coveredstatements="5" conditionals="10" coveredconditionals="6" methods="1" coveredmethods="1"/>
+      <file name="reporteMappers.js" path="C:\Users\rodri\Desktop\Proyecto-Municipalidad-Valle-del-Sol\Sigi_Front\src\utils\reporteMappers.js">
+        <metrics statements="5" coveredstatements="5" conditionals="10" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="10" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
