@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import MaterialSymbol from '../components/MaterialSymbol';
 import { useAuth } from '../context/AuthContext';
 import { getActividades } from '../services/municipioLocal';
 import { puedeReportar, esOperador, esAdmin } from '../constants/usuariosPrueba';
@@ -19,17 +20,17 @@ export default function Home() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         {puedeReportar(auth?.rol) && (
           <>
-            <CardLink to="/nuevo-reporte" title="Reportar emergencia" desc="Foto, ubicación y detalles" icon="🚨" />
-            <CardLink to="/mis-reportes" title="Mis reportes" desc="Historial pendientes y resueltos" icon="📋" />
+            <CardLink to="/nuevo-reporte" title="Reportar emergencia" desc="Foto, ubicación y detalles" icon="emergency" />
+            <CardLink to="/mis-reportes" title="Mis reportes" desc="Historial pendientes y resueltos" icon="assignment" />
           </>
         )}
-        <CardLink to="/empleos" title="Empleos" desc="Avisos y postulaciones" icon="💼" />
-        <CardLink to="/actividades" title="Actividades" desc="Eventos municipales" icon="📅" />
+        <CardLink to="/empleos" title="Empleos" desc="Avisos y postulaciones" icon="work" />
+        <CardLink to="/actividades" title="Actividades" desc="Eventos municipales" icon="event" />
         {(esOperador(auth?.rol) || esAdmin(auth?.rol)) && (
-          <CardLink to="/dashboard" title="Dashboard" desc="Validación y mapa de incidentes" accent icon="📊" />
+          <CardLink to="/dashboard" title="Dashboard" desc="Validación y mapa de incidentes" accent icon="space_dashboard" />
         )}
         {esEquipoSolo && (
-          <CardLink to="/panel-equipo" title="Panel de equipo" desc="Clasificar y atender reportes" accent icon="🚒" />
+          <CardLink to="/panel-equipo" title="Panel de equipo" desc="Clasificar y atender reportes" accent icon="local_fire_department" />
         )}
       </div>
 
@@ -56,7 +57,7 @@ function CardLink({ to, title, desc, accent, icon }) {
           : 'bg-white border-slate-200'
       }`}
     >
-      <span className="text-2xl" aria-hidden>{icon}</span>
+      <MaterialSymbol icon={icon} className="text-3xl text-slate-700" />
       <h3 className="font-bold text-slate-800 mt-2">{title}</h3>
       <p className="text-sm text-slate-500 mt-1">{desc}</p>
     </Link>

@@ -104,31 +104,31 @@ export const CONFIG_EQUIPO = {
     titulo: 'Brigada Municipal',
     subtitulo: 'Prevención y respuesta en terreno',
     color: 'emerald',
-    icono: '🌲',
+    icono: 'forest',
   },
   BOMBERO: {
     titulo: 'Cuerpo de Bomberos',
     subtitulo: 'Incendios y rescates',
     color: 'red',
-    icono: '🚒',
+    icono: 'local_fire_department',
   },
   AMBULANCIA: {
     titulo: 'SAMU Municipal',
     subtitulo: 'Atención prehospitalaria',
     color: 'sky',
-    icono: '🚑',
+    icono: 'medical_services',
   },
   SEGURIDAD_MUNICIPAL: {
     titulo: 'Seguridad Municipal',
     subtitulo: 'Orden público y coordinación',
     color: 'indigo',
-    icono: '🛡️',
+    icono: 'shield',
   },
   EQUIPO_EMERGENCIA: {
     titulo: 'Equipo de Emergencia',
     subtitulo: 'Respuesta integral',
     color: 'amber',
-    icono: '⚡',
+    icono: 'bolt',
   },
 };
 
