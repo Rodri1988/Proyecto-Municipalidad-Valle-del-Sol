@@ -48,7 +48,7 @@ export default function Login() {
         <div className="w-full max-w-md bg-white/95 backdrop-blur-sm p-7 sm:p-8 rounded-2xl shadow-2xl border border-white/20">
           <div className="mb-8 text-center lg:text-left">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">Bienvenido</h2>
-            <p className="text-gray-500 text-sm">Sistema SIGI — Municipalidad Valle del Sol</p>
+            <p className="text-gray-500 text-sm">SIGI — Municipalidad Valle del Sol</p>
           </div>
 
           {error && (
