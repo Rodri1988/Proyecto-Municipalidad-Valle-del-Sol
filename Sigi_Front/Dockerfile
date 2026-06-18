@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # ─────────────────────────────────────────
-# ETAPA 2: Servir con Nginx
+# ETAPA 2: Servir con Nginxxxx
 # ─────────────────────────────────────────
 FROM nginx:alpine
 
