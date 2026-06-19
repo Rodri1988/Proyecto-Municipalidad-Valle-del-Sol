@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../config/api';
+import { parseApiError } from '../utils/apiError';
 
 const STORAGE_KEY = 'sigi_auth';
 
@@ -36,10 +37,7 @@ export async function apiFetch(path, options = {}) {
   });
 
   if (!response.ok) {
-    const message = await parseErrorMessage(response);
-    const err = new Error(message);
-    err.status = response.status;
-    throw err;
+    throw await buildApiError(response, path);
   }
 
   if (response.status === 204) return null;
@@ -48,7 +46,7 @@ export async function apiFetch(path, options = {}) {
   return text ? JSON.parse(text) : null;
 }
 
-/** Subida multipart (imágenes) — no enviar Content-Type JSON */
+// Fotos: multipart, sin Content-Type JSON
 export async function apiUpload(path, formData, options = {}) {
   const auth = getStoredAuth();
   const headers = {};
@@ -63,8 +61,7 @@ export async function apiUpload(path, formData, options = {}) {
   });
 
   if (!response.ok) {
-    const message = await parseErrorMessage(response);
-    throw new Error(message);
+    throw await buildApiError(response, path);
   }
 
   const text = await response.text();
@@ -77,18 +74,7 @@ export function mediaUrl(path) {
   return `${API_BASE_URL}${path}`;
 }
 
-async function parseErrorMessage(response) {
-  try {
-    const body = await response.json();
-    return body.message ?? body.error ?? `Error ${response.status}`;
-  } catch {
-    const labels = {
-      400: 'Datos inválidos',
-      401: 'Credenciales incorrectas',
-      403: 'No tienes permiso para esta acción',
-      404: 'Recurso no encontrado',
-      500: 'Error del servidor',
-    };
-    return labels[response.status] ?? `Error ${response.status}`;
-  }
+async function buildApiError(response, path) {
+  const bodyText = await response.text();
+  return parseApiError(response.status, path, bodyText);
 }

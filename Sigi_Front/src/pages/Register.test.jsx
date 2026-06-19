@@ -74,11 +74,11 @@ describe('Register', () => {
     fireEvent.change(screen.getByLabelText(/^apellido$/i), { target: { value: 'González' } });
     fireEvent.change(screen.getByLabelText(/^rut$/i), { target: { value: '12.345.678-9' } });
     fireEvent.change(screen.getByLabelText(/^email$/i), { target: { value: 'juan@test.com' } });
-    fireEvent.change(screen.getByLabelText(/^teléfono$/i), { target: { value: '9123456789' } });
+    fireEvent.change(document.getElementById('telefono'), { target: { value: '912345678' } });
     fireEvent.change(document.getElementById('password'), { target: { value: 'secure123' } });
     fireEvent.change(document.getElementById('confirmPassword'), { target: { value: 'secure123' } });
 
-    // Simular selección de archivo
+    // archivo de prueba en el formulario
     const certInput = screen.getByLabelText(/certificado de residencia/i);
     const file = new File(['pdf content'], 'cert.pdf', { type: 'application/pdf' });
     Object.defineProperty(certInput, 'files', {
@@ -100,7 +100,7 @@ describe('Register', () => {
           apellido: 'González',
           rut: '12.345.678-9',
           email: 'juan@test.com',
-          telefono: '9123456789',
+          telefono: '+56912345678',
           password: 'secure123',
           certificadoResidenciaMediaId: 123,
         })
@@ -147,7 +147,7 @@ describe('Register', () => {
       </MemoryRouter>,
     );
 
-    // Primero mostrar el error
+    // mostramos el error de certificado faltante
     fireEvent.change(screen.getByLabelText(/^nombre$/i), { target: { value: 'Test' } });
     fireEvent.change(screen.getByLabelText(/^apellido$/i), { target: { value: 'User' } });
     fireEvent.change(screen.getByLabelText(/^rut$/i), { target: { value: '1-1' } });
@@ -158,7 +158,7 @@ describe('Register', () => {
 
     expect(screen.getByText(/debes adjuntar/i)).toBeInTheDocument();
 
-    // Seleccionar archivo debe limpiar error
+    // al elegir archivo el aviso desaparece
     const certInput = screen.getByLabelText(/certificado de residencia/i);
     const file = new File(['content'], 'file.pdf', { type: 'application/pdf' });
     Object.defineProperty(certInput, 'files', {

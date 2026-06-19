@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { getStoredAuth, setStoredAuth } from '../services/apiClient';
 import { login as loginApi, logout as logoutApi } from '../services/authService';
+import { serializeApiError } from '../utils/apiError';
 import {
   esAdmin,
   esOperador,
@@ -42,7 +43,7 @@ export function AuthProvider({ children }) {
           setAuth(session);
           return session;
         } catch (err) {
-          setError(err.message);
+          setError(serializeApiError(err));
           throw err;
         }
       },

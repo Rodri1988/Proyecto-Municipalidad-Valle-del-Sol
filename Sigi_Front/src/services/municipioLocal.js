@@ -1,7 +1,4 @@
-/**
- * Datos municipales (empleos, actividades, perfil, postulaciones)
- * persistidos en localStorage hasta que existan microservicios dedicados.
- */
+// Empleos, actividades y perfil en localStorage (demo hasta conectar todo al API).
 
 const KEY_EMPLEOS = 'sigi_empleos';
 const KEY_ACTIVIDADES = 'sigi_actividades';
@@ -111,7 +108,7 @@ export function getFotoReporte(reporteId) {
   return fotos[reporteId] ?? null;
 }
 
-/** CRUD empleos — solo admin en UI */
+// Empleos de la UI admin — datos locales
 export function crearEmpleo(empleo) {
   const lista = getEmpleos();
   const nuevo = { ...empleo, id: Date.now() };

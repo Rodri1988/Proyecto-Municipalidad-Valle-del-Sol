@@ -6,6 +6,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import DashboardStat from '../components/DashboardStat';
 import { useAuth } from '../context/AuthContext';
 import { CONFIG_EQUIPO } from '../constants/usuariosPrueba';
+import { serializeApiError } from '../utils/apiError';
 import { clasificarReporte, listarReportesEquipo } from '../services/reporteService';
 import { reporteApiACard } from '../utils/reporteMappers';
 
@@ -35,7 +36,7 @@ export default function DashboardEquipo() {
       const data = await listarReportesEquipo();
       setReportes(data);
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -54,7 +55,7 @@ export default function DashboardEquipo() {
       });
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
@@ -96,7 +97,7 @@ export default function DashboardEquipo() {
         </div>
       </section>
 
-      <ErrorMessage message={error} onRetry={cargar} />
+      <ErrorMessage error={error} onRetry={cargar} />
 
       <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:gap-4">
         <DashboardStat label="Pendientes" value={pendientes} accent={config.color} />

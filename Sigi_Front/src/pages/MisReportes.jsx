@@ -5,6 +5,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import { useAuth } from '../context/AuthContext';
 import { mediaUrl } from '../services/apiClient';
 import { misReportes } from '../services/reporteService';
+import { serializeApiError } from '../utils/apiError';
 
 export default function MisReportes() {
   const { usuarioId } = useAuth();
@@ -20,7 +21,7 @@ export default function MisReportes() {
       const lista = await misReportes(usuarioId);
       setData(lista);
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -37,7 +38,7 @@ export default function MisReportes() {
   });
 
   if (loading) return <Layout><Spinner label="Cargando tus reportes..." /></Layout>;
-  if (error) return <Layout><ErrorMessage message={error} onRetry={cargar} /></Layout>;
+  if (error) return <Layout><ErrorMessage error={error} onRetry={cargar} /></Layout>;
 
   return (
     <Layout title="Mis reportes">

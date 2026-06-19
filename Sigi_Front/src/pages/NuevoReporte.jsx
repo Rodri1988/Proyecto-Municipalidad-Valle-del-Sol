@@ -7,6 +7,7 @@ import { crearReporte } from '../services/reporteService';
 import { subirImagen } from '../services/mediaService';
 import { TIPOS_EMERGENCIA, PRIORIDADES_API } from '../utils/reporteMappers';
 import { esOperador } from '../constants/usuariosPrueba';
+import { serializeApiError } from '../utils/apiError';
 
 export default function NuevoReporte() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function NuevoReporte() {
         state: { mensaje: creado.motivoPrioridad },
       });
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -59,7 +60,7 @@ export default function NuevoReporte() {
 
   return (
     <Layout title="Nuevo reporte de emergencia">
-      <ErrorMessage message={error} />
+      <ErrorMessage error={error} />
 
       {!operadorPuedePriorizar && (
         <div className="mb-6 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">

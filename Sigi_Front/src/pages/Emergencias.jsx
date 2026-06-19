@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import { listarEmergenciasActivas, actualizarEstadoEmergencia } from '../services/emergenciaService';
+import { serializeApiError } from '../utils/apiError';
 
 const ESTADOS = ['ACTIVA', 'EN_PROCESO', 'CONTROLADA', 'RESUELTA'];
 
@@ -17,7 +18,7 @@ export default function Emergencias() {
     try {
       setData(await listarEmergenciasActivas());
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -35,7 +36,7 @@ export default function Emergencias() {
       });
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
@@ -43,7 +44,7 @@ export default function Emergencias() {
 
   return (
     <Layout title="Emergencias activas (brigada / bomberos)">
-      <ErrorMessage message={error} onRetry={cargar} />
+      <ErrorMessage error={error} onRetry={cargar} />
       <p className="text-sm text-gray-500 mb-4">Permiso de lectura y edición de estado</p>
       <ul className="space-y-4">
         {data.map((e) => (

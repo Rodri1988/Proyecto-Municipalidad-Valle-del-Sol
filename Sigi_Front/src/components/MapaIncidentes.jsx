@@ -1,4 +1,4 @@
-/** Mapa con OpenStreetMap y lista de incidentes */
+// Mapa OpenStreetMap + listado de incidentes
 export default function MapaIncidentes({ puntos = [], onRefresh }) {
   const conCoords = puntos.filter((p) => p.latitud != null && p.longitud != null);
 

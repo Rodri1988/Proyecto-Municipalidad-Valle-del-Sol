@@ -12,6 +12,7 @@ import {
   postularEmpleo,
   misPostulaciones,
 } from '../services/empleoService';
+import { serializeApiError } from '../utils/apiError';
 
 export default function Empleos() {
   const { esAdmin, esOperador } = useAuth();
@@ -21,6 +22,7 @@ export default function Empleos() {
   const [todasPostulaciones, setTodasPostulaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [formError, setFormError] = useState(null);
   const [mensaje, setMensaje] = useState('');
   const [nuevo, setNuevo] = useState({
     titulo: '',
@@ -43,7 +45,7 @@ export default function Empleos() {
       setPostulaciones(post);
       setTodasPostulaciones(todas);
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -54,17 +56,19 @@ export default function Empleos() {
   }, [esAdmin, puedeVerPostulaciones]);
 
   const postular = async (empleoId) => {
+    setFormError(null);
     try {
       await postularEmpleo(empleoId);
       setMensaje('Postulación enviada al municipio');
       await cargar();
     } catch (err) {
-      setMensaje(err.message);
+      setFormError(serializeApiError(err));
     }
   };
 
   const agregarEmpleo = async (e) => {
     e.preventDefault();
+    setFormError(null);
     try {
       await crearEmpleo({
         ...nuevo,
@@ -74,7 +78,7 @@ export default function Empleos() {
       setNuevo({ titulo: '', departamento: '', plazas: 1, descripcion: '', fechaCierre: '' });
       await cargar();
     } catch (err) {
-      setMensaje(err.message);
+      setFormError(serializeApiError(err));
     }
   };
 
@@ -82,7 +86,8 @@ export default function Empleos() {
 
   return (
     <Layout title="Empleos disponibles">
-      <ErrorMessage message={error} onRetry={cargar} />
+      <ErrorMessage error={error} onRetry={cargar} />
+      {formError && <ErrorMessage error={formError} onDismiss={() => setFormError(null)} />}
       {mensaje && <p className="mb-4 text-sm text-green-700 bg-green-50 p-2 rounded">{mensaje}</p>}
       <ul className="space-y-3 mb-8">
         {empleos.map((emp) => (

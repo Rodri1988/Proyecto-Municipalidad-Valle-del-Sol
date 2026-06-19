@@ -1,4 +1,4 @@
-/** Mapea respuesta API → formato de tarjeta del desafío Hooks */
+// Respuesta del API → formato de la tarjeta del desafío Hooks
 export function reporteApiACard(reporte) {
   const prioridadMap = {
     CRITICA: 'crítico',

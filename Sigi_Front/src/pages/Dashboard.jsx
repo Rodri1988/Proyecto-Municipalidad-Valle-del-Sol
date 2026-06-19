@@ -15,6 +15,7 @@ import { listarTodasEmergencias } from '../services/emergenciaService';
 import { listarPersonalEmergencia } from '../services/usuarioService';
 import { useAuth } from '../context/AuthContext';
 import { PRIORIDADES_API } from '../utils/reporteMappers';
+import { serializeApiError } from '../utils/apiError';
 
 const FILTROS = {
   todos: () => true,
@@ -51,7 +52,7 @@ export default function Dashboard() {
       rep.forEach((r) => { pri[r.id] = r.prioridad; });
       setPrioridades(pri);
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -71,7 +72,7 @@ export default function Dashboard() {
       });
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
@@ -83,14 +84,14 @@ export default function Dashboard() {
       });
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
   const handleAsignar = async (id) => {
     const usuarioId = Number(asignarA[id]);
     if (!usuarioId) {
-      setError('Selecciona personal de emergencia');
+      setError(serializeApiError('Selecciona personal de emergencia'));
       return;
     }
     try {
@@ -100,7 +101,7 @@ export default function Dashboard() {
       });
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
@@ -138,7 +139,7 @@ export default function Dashboard() {
 
   return (
     <Layout title="Dashboard operacional">
-      <ErrorMessage message={error} onRetry={cargar} />
+      <ErrorMessage error={error} onRetry={cargar} />
 
       <section className="mb-8 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-orange-900 p-6 sm:p-8 text-white shadow-xl">
         <h2 className="text-xl sm:text-2xl font-extrabold">Centro de control SIGI</h2>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { rutaInicioPorRol } from '../constants/usuariosPrueba';
 import AuthHero from '../components/AuthHero';
+import ErrorMessage from '../components/ErrorMessage';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -51,11 +52,7 @@ export default function Login() {
             <p className="text-gray-500 text-sm">SIGI — Municipalidad Valle del Sol</p>
           </div>
 
-          {error && (
-            <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">
-              {error}
-            </p>
-          )}
+          <ErrorMessage error={error} onDismiss={clearError} />
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>

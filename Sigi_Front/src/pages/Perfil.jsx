@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { mediaUrl } from '../services/apiClient';
 import { subirImagen } from '../services/mediaService';
 import { actualizarFotoPerfil } from '../services/usuarioService';
+import { serializeApiError } from '../utils/apiError';
 
 export default function Perfil() {
   const { auth } = useAuth();
@@ -26,7 +27,7 @@ export default function Perfil() {
       setGuardado(true);
       setTimeout(() => setGuardado(false), 2000);
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -34,7 +35,7 @@ export default function Perfil() {
 
   return (
     <Layout title="Mi perfil">
-      <ErrorMessage message={error} />
+      <ErrorMessage error={error} />
       <div className="max-w-md bg-white border rounded-xl p-6 space-y-4">
         <div className="flex items-center gap-4">
           {fotoUrl ? (

@@ -124,7 +124,7 @@ describe('apiClient', () => {
       global.fetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        json: async () => ({ message: 'Usuario no encontrado' }),
+        text: async () => JSON.stringify({ message: 'Usuario no encontrado' }),
       });
 
       await expect(apiFetch('/api/user/999')).rejects.toThrow(
@@ -136,13 +136,11 @@ describe('apiClient', () => {
       global.fetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
-        json: async () => {
-          throw new Error('Invalid JSON');
-        },
+        text: async () => '',
       });
 
-      await expect(apiFetch('/api/protected')).rejects.toThrow(
-        'Credenciales incorrectas'
+      await expect(apiFetch('/auth/login')).rejects.toThrow(
+        'contraseña'
       );
     });
 
@@ -150,13 +148,11 @@ describe('apiClient', () => {
       global.fetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
-        json: async () => {
-          throw new Error('Invalid JSON');
-        },
+        text: async () => '',
       });
 
       await expect(apiFetch('/api/error')).rejects.toThrow(
-        'Error del servidor'
+        'servidor'
       );
     });
 
@@ -219,7 +215,7 @@ describe('apiClient', () => {
       global.fetch.mockResolvedValueOnce({
         ok: false,
         status: 400,
-        json: async () => ({ message: 'Archivo inválido' }),
+        text: async () => JSON.stringify({ message: 'Archivo inválido' }),
       });
 
       const formData = new FormData();

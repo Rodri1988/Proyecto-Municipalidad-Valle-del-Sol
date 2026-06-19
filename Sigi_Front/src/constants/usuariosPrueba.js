@@ -1,6 +1,4 @@
-/**
- * Usuarios de demostración — Grupo Valle del Sol
- */
+// Usuarios de demo — grupo Valle del Sol (Hawk, Emilio, Rodrigo)
 export const USUARIOS_PRUEBA = [
   {
     id: 'hawk',

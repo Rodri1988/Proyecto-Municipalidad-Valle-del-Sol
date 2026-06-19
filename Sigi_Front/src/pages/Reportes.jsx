@@ -6,6 +6,7 @@ import ReporteIncendioCard from '../components/ReporteIncendioCard';
 import { reportesPendientes } from '../services/reporteService';
 import { reporteApiACard } from '../utils/reporteMappers';
 import { useAuth } from '../context/AuthContext';
+import { serializeApiError } from '../utils/apiError';
 
 const reportesDemo = [
   { id: 1, sector: 'Sector Norte', nivelRiesgo: 'crítico', fuente: 'Vecino', hora: '08:30', estado: 'PENDIENTE' },
@@ -27,7 +28,7 @@ export default function Reportes() {
       const data = await reportesPendientes();
       setReportes(data.map(reporteApiACard));
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
       setReportes(reportesDemo);
       setUsarApi(false);
     } finally {
@@ -89,7 +90,7 @@ export default function Reportes() {
 
   return (
     <Layout title="Reportes de emergencia">
-      <ErrorMessage message={error} onRetry={cargarApi} />
+      <ErrorMessage error={error} onRetry={cargarApi} />
       <p className="text-sm text-gray-500 mb-4">
         {usarApi ? 'Datos en vivo desde API' : 'Modo demo (FULLSTACK III)'} · filtro y simulación cada 5s
       </p>

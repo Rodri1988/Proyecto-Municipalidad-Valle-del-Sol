@@ -11,6 +11,7 @@ import {
   reactivarUsuario,
   eliminarUsuario,
 } from '../services/usuarioService';
+import { serializeApiError } from '../utils/apiError';
 
 const ROLES_ASIGNABLES = Object.values(ROLES);
 
@@ -18,6 +19,7 @@ export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [formError, setFormError] = useState(null);
   const [mensaje, setMensaje] = useState('');
   const [nuevo, setNuevo] = useState({
     nombre: '',
@@ -35,7 +37,7 @@ export default function Usuarios() {
     try {
       setUsuarios(await listarUsuarios());
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     } finally {
       setLoading(false);
     }
@@ -47,7 +49,7 @@ export default function Usuarios() {
 
   const crear = async (e) => {
     e.preventDefault();
-    setMensaje('');
+    setFormError(null);
     try {
       await crearUsuario({
         ...nuevo,
@@ -65,7 +67,7 @@ export default function Usuarios() {
       setMensaje('Usuario creado');
       await cargar();
     } catch (err) {
-      setMensaje(err.message);
+      setFormError(serializeApiError(err));
     }
   };
 
@@ -74,7 +76,7 @@ export default function Usuarios() {
       await actualizarRolUsuario(id, rol);
       await cargar();
     } catch (err) {
-      setError(err.message);
+      setError(serializeApiError(err));
     }
   };
 
@@ -82,7 +84,8 @@ export default function Usuarios() {
 
   return (
     <Layout title="Gestión de usuarios (admin)">
-      <ErrorMessage message={error} onRetry={cargar} />
+      <ErrorMessage error={error} onRetry={cargar} />
+      {formError && <ErrorMessage error={formError} onDismiss={() => setFormError(null)} />}
       {mensaje && (
         <p className="mb-4 text-sm text-green-700 bg-green-50 p-2 rounded-lg">{mensaje}</p>
       )}
